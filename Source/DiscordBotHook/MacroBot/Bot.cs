@@ -28,6 +28,13 @@ namespace MacroBot
             //_client.MessageReceived += MessageReceived;
         }
         
+        public async Task SendMessageAsync(ulong channelId, string message)
+        {
+            var channel = _client.GetChannel(channelId) as SocketTextChannel;
+            await channel.SendMessageAsync(message);
+        }
+
+
         public async Task Start(string token)
         {
             await InitCommands();
@@ -59,6 +66,9 @@ namespace MacroBot
             // Repeat this for all the service classes
             // and other dependencies that your commands might need.
             //_map.AddSingleton(new SomeServiceClass());
+            _map.AddTransient<IDatabaseServiceFactory, LiteDbDatabaseFactory>();
+            _map.AddTransient<ITokenDataService, TokenDataService>();
+            _map.AddTransient<ITokenService, GuidTokenService>();
 
             // When all your required services are in the collection, build the container.
             // Tip: There's an overload taking in a 'validateScopes' bool to make sure

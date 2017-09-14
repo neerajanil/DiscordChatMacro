@@ -12,18 +12,26 @@ namespace MacroBot
     }
 
 
-    public class TokenService : ITokenService
+    public class GuidTokenService : ITokenService
     {
-        public TokenService()
+        ITokenDataService _tokenDataService;
+        public GuidTokenService(ITokenDataService tokenDataService)
         {
-
+            _tokenDataService = tokenDataService ?? throw new ArgumentNullException("tokenDataService");
         }
 
         public Task<Token> GetToken(ulong userId, ulong channelId)
         {
-            return Task.FromResult<Token>(new Token());
+            _tokenDataService.DeleteToken(userId);
+            Token token = new Token() {
+                Id = Guid.NewGuid().ToString(),
+                UserId = userId,
+                ChannelId = channelId,
+                CreatedDateTime = DateTime.UtcNow
+            };
+            _tokenDataService.InsertToken(token);
+            return Task.FromResult<Token>(token);
         }
-
     }
 
 }

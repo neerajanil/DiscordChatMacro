@@ -13,6 +13,11 @@ using Discord.WebSocket;
 
 namespace MacroBot
 {
+    public static class GlobalState
+    {
+        public static Bot CurrentBot { get; set; }
+    }
+
     public class Program
     {
         public static void Main(string[] args) => new Program().MainAsync(args).GetAwaiter().GetResult();
@@ -24,7 +29,7 @@ namespace MacroBot
             string token = "MzU3MzY2ODMyMzI5MzkyMTI4.DJo3ag.If-hoMi7IwNbuqtBL2HCSR5LlO8"; // Remember to keep this private!
             var bot = new Bot();
             await bot.Start(token);
-
+            GlobalState.CurrentBot = bot;
             BuildWebHost(args).Run();
 
         }
