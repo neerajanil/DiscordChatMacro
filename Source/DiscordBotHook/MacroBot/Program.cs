@@ -26,9 +26,13 @@ namespace MacroBot
         public async Task MainAsync(string[] args)
         {
             
-            string token = "MzU3MzY2ODMyMzI5MzkyMTI4.DJo3ag.If-hoMi7IwNbuqtBL2HCSR5LlO8"; // Remember to keep this private!
+            
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("discord.json", optional: true)
+                .Build();
             var bot = new Bot();
-            await bot.Start(token);
+            await bot.Start(config["token"]);
             GlobalState.CurrentBot = bot;
             BuildWebHost(args).Run();
 
