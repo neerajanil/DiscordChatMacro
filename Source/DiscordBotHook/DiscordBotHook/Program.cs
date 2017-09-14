@@ -15,7 +15,8 @@ namespace DiscordBotHook
         {
             //for debugging
             //args = new string[] {
-            //    "http://localhost:5123/api/macro",
+            //    "http://536f5bf9-e225-42cf-9186-0027b6d8cac6.pub.cloud.scaleway.com/api/macro",
+            //    "<<token guid>>",
             //    "?chatwheel crybaby"
             //};
 
@@ -25,7 +26,9 @@ namespace DiscordBotHook
             try
             {
                 string hookUrl = args[0];
-                string messageContent = args[1];
+                string token = args[1];
+                string messageContent = args[2];
+                
 
                 try
                 {
@@ -44,7 +47,7 @@ namespace DiscordBotHook
 
 
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    var body = new StringContent(String.Format("{{ \"message\":\"{0}\",\"tokenid\":\"{1}\" }}", messageContent, "19cbda5b-b518-4d64-8e6c-edf3cd360306"));
+                    var body = new StringContent(String.Format("{{ \"message\":\"{0}\",\"tokenid\":\"{1}\" }}", messageContent, token));
                     body.Headers.ContentType.MediaType = "application/json";
 
                     var response = client.PostAsync(hookUrl, body).Result;
